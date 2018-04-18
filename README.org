@@ -1,0 +1,37 @@
+* Maths
+
+  A place to play with silly little problems.
+** Stacks of scales
+
+   Imagine a stack of electronic scales, with a rock on top. The
+   read-out on the top scale shows the weight of the rock. The
+   second-top scale shows the weight of the rock plus the weight of
+   the top scale, and so on.
+
+   Given a list of the readouts from the scales, can we get a list of
+   weights of the scales themselves?
+
+   Well, almost. We have no way of knowing the weight of the bottom
+   scale in the stack, but we can calculate all the weight of every
+   other scale by subtracting its own reading from the reading of the
+   scale beneath it. It feels like we ought to be able to write this
+   in one line of haskell:
+
+   #+BEGIN_SRC haskell
+     foldPairwise (-) readings
+   #+END_SRC
+
+   ...using some magical function:
+
+   #+BEGIN_SRC haskell
+     foldPairwise :: (a -> a -> a) -> [a] -> [a]
+   #+END_SRC
+
+   I couldn't find this function on hoogle, so I tried writing it. You
+   can see the current state in [[src/Lib.hs]].
+
+*** TODO Generalise -- this should work for any foldable
+*** TODO Test some properties
+    - The length of the output should always be one less than the length of the input.
+    - ~foldPairwise snd~ should equal ~tail~
+    - ~foldPairwise fst~ should equal ~reverse . tail . reverse~

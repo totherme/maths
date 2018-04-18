@@ -1,0 +1,34 @@
+name:                maths
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/totherme/maths#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Gareth Smith
+maintainer:          github@totherme.org.uk
+copyright:           2018 Gareth Smith
+category:            Lib
+build-type:          Simple
+extra-source-files:  README.org
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Lib
+  build-depends:       base >= 4.7 && < 5 , mtl >= 2.2.1
+  default-language:    Haskell2010
+
+test-suite haskell-play-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , haskell-play
+                     , text
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  default-language:    Haskell2010
+
+source-repository head
+  type:     git
+  location: https://github.com/totherme/maths
