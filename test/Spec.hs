@@ -12,3 +12,8 @@ main = hspec $ do
     context "when called with 'curry snd'" $ do
       it "equals tail" $ forAll (listOf1 arbitrary) 
         (\(list :: [Int]) -> foldPairwise (curry snd) list `shouldBe` tail list)
+    context "when called with 'curry fst'" $ do
+      it "equals reverse.tail.reverse" $ forAll (listOf1 arbitrary) 
+        (\(list :: [Int]) -> foldPairwise (curry fst) list 
+          `shouldBe` 
+          (reverse . tail . reverse) list)
