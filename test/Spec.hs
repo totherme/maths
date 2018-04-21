@@ -1,8 +1,11 @@
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 import Test.Hspec
 import Maths
 import Test.QuickCheck (property, forAll, listOf1, arbitrary)
+import GHC.Generics
+import Data.Unfoldable
 
 main :: IO ()
 main = hspec $ do
@@ -23,6 +26,17 @@ main = hspec $ do
   describe "explicitly recursive variation" $
     it "works like the foldl one" $ property $
       \(list :: [Int]) -> foldPairwiseRec (+) list `shouldBe` foldPairwise (+) list
-  describe "generic version" $
+  describe "generic version" $ do
     it "works like the foldl one" $ property $
-      \(list :: [Int]) -> foldPairWiseGen (+) list `shouldBe` foldPairwise (+) list
+      \(list :: [Int]) -> foldPairWiseGeneral (+) list `shouldBe` foldPairwise (+) list
+    it "works on trees as well as lists" $
+      foldPairWiseGeneral (+) (Node (Node (Leaf 1) (Leaf 1)) (Leaf 1))
+      `shouldBe`
+      Node (Leaf 2) (Leaf 2)
+
+data BT a = Node (BT a) (BT a) | Leaf a deriving (Generic1, Show, Eq)
+
+instance Unfoldable BT
+instance Foldable BT where
+  foldr f x (Leaf y) = f y x
+  foldr f x (Node t1 t2) = foldr f (foldr f x t1) t2

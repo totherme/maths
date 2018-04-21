@@ -2,7 +2,8 @@
 
 module Maths where
 
-import Control.Monad.State.Lazy
+import Data.Unfoldable
+import Data.Maybe
 
 foldPairwise :: forall a b . (a -> a -> b) -> [a] -> [b]
 foldPairwise f = snd . foldl g (Nothing, []) where
@@ -16,11 +17,14 @@ foldPairwiseRight f = snd . foldr g (Nothing, []) where
   g x (Nothing, []) = (Just x, [])
   g x (Just y, xs) = (Just x, f x y : xs)
 
-foldPairWiseGen :: forall a b t . Foldable t => (a -> a -> b) -> t a -> [b]
-foldPairWiseGen f = snd . foldr g (Nothing, []) where
+foldPairWiseGeneral :: forall a b t . (Foldable t , Unfoldable t) => 
+                       (a -> a -> b) -> t a -> t b
+foldPairWiseGeneral f = h . snd . foldr g (Nothing, []) where
   g :: a -> (Maybe a, [b]) -> (Maybe a, [b])
   g x (Nothing, []) = (Just x, [])
   g x (Just y, xs) = (Just x, f x y : xs)
+  h :: [b] -> t b
+  h = fromJust . fromList
 
 foldPairwiseRec :: forall a b . (a -> a -> b) -> [a] -> [b]
 foldPairwiseRec f [] = []
