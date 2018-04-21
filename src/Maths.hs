@@ -25,10 +25,3 @@ foldPairWiseGeneral f = h . snd . foldr g (Nothing, []) where
   g x (Just y, xs) = (Just x, f x y : xs)
   h :: [b] -> t b
   h = fromJust . fromList
-
-foldPairwiseRec :: forall a b . (a -> a -> b) -> [a] -> [b]
-foldPairwiseRec f [] = []
-foldPairwiseRec f xs = foldPairwiseRec' f (head xs) (tail xs) where
-  foldPairwiseRec' :: (a -> a -> b) -> a -> [a] -> [b]
-  foldPairwiseRec' f _ [] = []
-  foldPairwiseRec' f x (y:ys) = f x y : foldPairwiseRec' f y ys

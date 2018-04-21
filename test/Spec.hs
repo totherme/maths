@@ -25,7 +25,7 @@ main = hspec $ do
       \(list :: [Int]) -> foldPairwiseRight (+) list `shouldBe` foldPairwise (+) list
   describe "explicitly recursive variation" $
     it "works like the foldl one" $ property $
-      \(list :: [Int]) -> foldPairwiseRec (+) list `shouldBe` foldPairwise (+) list
+      \(list :: [Int]) -> foldPairwiseSpec (+) list `shouldBe` foldPairwise (+) list
   describe "generic version" $ do
     it "works like the foldl one" $ property $
       \(list :: [Int]) -> foldPairWiseGeneral (+) list `shouldBe` foldPairwise (+) list
@@ -33,6 +33,14 @@ main = hspec $ do
       foldPairWiseGeneral (+) (Node (Node (Leaf 1) (Leaf 1)) (Leaf 1))
       `shouldBe`
       Node (Leaf 2) (Leaf 2)
+
+foldPairwiseSpec :: forall a b . (a -> a -> b) -> [a] -> [b]
+foldPairwiseSpec f [] = []
+foldPairwiseSpec f xs = foldPairwiseSpec' f (head xs) (tail xs) where
+  foldPairwiseSpec' :: (a -> a -> b) -> a -> [a] -> [b]
+  foldPairwiseSpec' f _ [] = []
+  foldPairwiseSpec' f x (y:ys) = f x y : foldPairwiseSpec' f y ys
+
 
 data BT a = Node (BT a) (BT a) | Leaf a deriving (Generic1, Show, Eq)
 
