@@ -13,16 +13,16 @@ main = hspec $ do
       it "equals tail" $ forAll (listOf1 arbitrary) $
         \(list :: [Int]) -> foldPairwise (curry snd) list `shouldBe` tail list
     context "when called with 'curry fst'" $
-      it "equals reverse.tail.reverse" $ forAll (listOf1 arbitrary) $
+      it "equals init" $ forAll (listOf1 arbitrary) $
         \(list :: [Int]) -> foldPairwise (curry fst) list
           `shouldBe` 
-          (reverse . tail . reverse) list
-  describe "foldr variation" $ do
+          init list
+  describe "foldr variation" $
     it "works like the foldl one" $ property $
       \(list :: [Int]) -> foldPairwiseRight (+) list `shouldBe` foldPairwise (+) list
-  describe "explicitly recursive variation" $ do
+  describe "explicitly recursive variation" $
     it "works like the foldl one" $ property $
       \(list :: [Int]) -> foldPairwiseRec (+) list `shouldBe` foldPairwise (+) list
-  describe "generic version" $ do
+  describe "generic version" $
     it "works like the foldl one" $ property $
       \(list :: [Int]) -> foldPairWiseGen (+) list `shouldBe` foldPairwise (+) list
