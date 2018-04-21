@@ -18,13 +18,13 @@
    in one line of haskell:
 
    #+BEGIN_SRC haskell
-     foldPairWise (-) readings
+     mapPairWise (-) readings
    #+END_SRC
 
    ...using some magical function:
 
    #+BEGIN_SRC haskell
-     foldPairWise :: (a -> a -> a) -> [a] -> [a]
+     mapPairWise :: (a -> a -> a) -> [a] -> [a]
    #+END_SRC
 
    This function ought to take a list of items, and apply a binary
@@ -32,7 +32,7 @@
    list of results, for example like so:
 
    #+BEGIN_SRC haskell
-     foldPairWise (+) [x1,x2,x3,x4,x5]
+     mapPairWise (+) [x1,x2,x3,x4,x5]
 
      input  = [ x1 , x2 , x3 , x4 , x5 ]
                   \ /  \ /  \ /  \ /
@@ -51,11 +51,11 @@
 
    Of course, we don't need to limit ourselves to binary operators
    whose return types match their arguments. For example,
-   ~foldPairWise (/=)~ could be used to detect changes in streams of
+   ~mapPairWise (/=)~ could be used to detect changes in streams of
    usually-stable data. So, perhaps the type of the function we want is:
 
    #+BEGIN_SRC haskell
-     foldPairWise :: (a -> a -> b) -> [a] -> [b]
+     mapPairWise :: (a -> a -> b) -> [a] -> [b]
    #+END_SRC
 
    But most of the work of this function can be accomplished by
@@ -65,7 +65,7 @@
    anything else that can be folded and unfolded:
 
    #+BEGIN_SRC haskell
-     foldPairWise :: (Foldable t , Unfoldable t) => (a -> a -> b) -> t a -> t b
+     mapPairWise :: (Foldable t , Unfoldable t) => (a -> a -> b) -> t a -> t b
    #+END_SRC
 
    By the time we get this generic, the function stopped being quite
