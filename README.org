@@ -47,7 +47,7 @@
    #+END_SRC
 
    I couldn't find this function on hoogle, so I tried writing it. You
-   can see how I went about it in the commit history of [[src/Maths.hs]].
+   can see how I went about it in the commit history of [[src/PairWise.hs]].
 
    Of course, we don't need to limit ourselves to binary operators
    whose return types match their arguments. For example,
