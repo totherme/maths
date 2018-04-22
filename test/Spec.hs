@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 import Test.Hspec
-import Maths
+import PairWise
 import Test.QuickCheck (property, forAll, listOf1, arbitrary)
 import GHC.Generics
 import Data.Unfoldable

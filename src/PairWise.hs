@@ -1,6 +1,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module Maths where
+module PairWise where
 
 import Data.Unfoldable
 import Data.Maybe
