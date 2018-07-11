@@ -73,3 +73,80 @@
    naive definition for use as a spec. We can use quickcheck to test
    that the generic function can at least do everything the naive one
    can.
+
+** Graphs and Learning Strategies
+   I once learned a metaphor for a pair of opposing ways of thinking
+   about things. It went like this: Given a space of ideas to explore,
+   a person might approach the space like a butterfly or light a
+   freight train[fn:1]. Both the train and the butterfly will take the same
+   amount of time to approach mastery of the space, but they'll take
+   very different routes to get there. A freight train will tackle
+   each idea in the space in a clearly defined order. A butterfly will
+   flit around from place to place within the space, taking in each
+   idea in a seemingly random order.
+
+   Both these ways of thinking and learning are valuable. Both will
+   produce masters of their fields. On the route to mastery the
+   freight train is likely to be more clearly aware of the boundaries
+   of their understanding, while the butterfly is likely to have a
+   more holistic grasp of the subject area. If you're building a team,
+   you might want to have representatives of both thinking styles
+   present.
+
+   When describing butterflies and freight trains to a friend
+   recently, I was asked if one was a breadth first search, and the
+   other was a depth first search. That's the question I'd like to
+   explore here.
+
+*** Characterizing Butterflies and Freight Trains
+
+    Let's represent our space of ideas as a set of numbers.
+
+    #+BEGIN_SRC haskell
+      ideas = [1,2,3,4,5,6,7,8,9]
+    #+END_SRC
+
+    A freight train thinker will always approach this space
+    systematically. So for our purposes, let us assume that they
+    tackle each idea in numerical order.
+
+    #+BEGIN_SRC haskell
+      freightTrain ideas = [1,2,3,4,5,6,7,8,9]
+    #+END_SRC
+
+    Our butterfly thinkers will likely all take different, seemingly
+    random, routes through the space.
+
+    #+BEGIN_SRC haskell
+      butterfly1 ideas = [1,5,6,8,4,2,7,3,9]
+      butterfly2 ideas = [8,3,9,1,5,6,2,4,7]
+      butterfly3 ideas = [4,9,2,1,5,7,8,3,6]
+    #+END_SRC
+
+   
+*** Idea-spanning Trees
+    We're interested in whether we can (for some butterfly)
+    characterize our ideas-space as a tree, such that a depth-first
+    search of that tree yields a freight train exploration of the
+    space, and a breadth-first search of the space yields our
+    butterfly's exploration of the space. For example for the
+    sequences ~freightTrain = [1,2,3,4]~ and ~butterfly = [1,2,4,3]~
+    we might have the following tree:
+    
+    #+BEGIN_SRC haskell
+      Node 1 (Node 2 (Node 3) Leaf) (Node 4 Leaf Leaf)
+    #+END_SRC
+
+    This is all very well for a well-chosen example, but it quickly 
+    #+BEGIN_SRC haskell
+      Node 1
+        (Node 2 (Node 3) (Node 4)) (Node 5 () ()) bugger
+    #+END_SRC
+
+
+* Footnotes
+
+[fn:1] I've also heard the freight trains referred to as "inchworm
+thinkers", but in my experience they tend to prefer the label "freight
+train". So that's the label I'll use here.
+ 
